@@ -1,4 +1,4 @@
 SoundBlog
 =========
 
-soundblog radio
+soundblog radio application
