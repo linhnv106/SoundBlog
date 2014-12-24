@@ -34,8 +34,10 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import mk.apps.soundblog.BuildConfig;
@@ -126,8 +128,9 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
                     @Override
                     public void onGlobalLayout() {
                         if (mAdapter.getNumColumns() == 0) {
-                            final int numColumns = (int) Math.floor(
-                                    mGridView.getWidth() / (mImageThumbSize + mImageThumbSpacing));
+//                            final int numColumns = (int) Math.floor(
+//                                    mGridView.getWidth() / (mImageThumbSize + mImageThumbSpacing));
+                            final int numColumns = 2;
                             if (numColumns > 0) {
                                 final int columnWidth =
                                         (mGridView.getWidth() / numColumns) - mImageThumbSpacing;
@@ -217,13 +220,13 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         private int mItemHeight = 0;
         private int mNumColumns = 0;
         private int mActionBarHeight = 0;
-        private GridView.LayoutParams mImageViewLayoutParams;
+        private FrameLayout.LayoutParams mImageViewLayoutParams;
         private LayoutInflater mLayoutInflater;
         public ImageAdapter(Context context) {
             super();
             mContext = context;
-            mImageViewLayoutParams = new GridView.LayoutParams(
-                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            mImageViewLayoutParams = new FrameLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             // Calculate ActionBar height
             TypedValue tv = new TypedValue();
             if (context.getTheme().resolveAttribute(
@@ -277,29 +280,33 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         public View getView(int position, View convertView, ViewGroup container) {
             //BEGIN_INCLUDE(load_gridview_item)
             // First check if this is the top row
-            if (position < mNumColumns) {
-                if (convertView == null) {
-                    convertView = mLayoutInflater.inflate(R.layout.entry_item, null);
-                }
-                // Set empty view with height of ActionBar
-//                convertView.setLayoutParams(new AbsListView.LayoutParams(
-//                        LayoutParams.MATCH_PARENT, mActionBarHeight));
-                return convertView;
-            }
+//            if (position < mNumColumns) {
+//                if (convertView == null) {
+//                    convertView = mLayoutInflater.inflate(R.layout.entry_item, null);
+//                }
+//                // Set empty view with height of ActionBar
+////                convertView.setLayoutParams(new AbsListView.LayoutParams(
+////                        LayoutParams.MATCH_PARENT, mActionBarHeight));
+//                return convertView;
+//            }
 
             // Now handle the main ImageView thumbnails
             ImageView imageView;
-            if (convertView == null) { // if it's not recycled, instantiate and initialize
+            TextView textView;
+//            if (convertView == null) { // if it's not recycled, instantiate and initialize
                 convertView = mLayoutInflater.inflate(R.layout.entry_item, null);
 
 
 //                imageView = new RecyclingImageView(mContext);
 //                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //                imageView.setLayoutParams(mImageViewLayoutParams);
-            } else { // Otherwise re-use the converted view
-//                imageView = (ImageView) convertView;
-            }
+//            } else { // Otherwise re-use the converted view
+////                imageView = (ImageView) convertView;
+//            }
             imageView = (ImageView) convertView.findViewById(R.id.entry_ic);
+            textView = (TextView) convertView.findViewById(R.id.entry_title);
+            textView.setText("update title");
+//            textView.setLayoutParams( new GridView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             // Check the height matches our calculated column width
             if (imageView.getLayoutParams().height != mItemHeight) {
                 imageView.setLayoutParams(mImageViewLayoutParams);
@@ -308,7 +315,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             // Finally load the image asynchronously into the ImageView, this also takes care of
             // setting a placeholder image while the background thread runs
 //            mImageFetcher.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
-            return imageView;
+            return convertView;
             //END_INCLUDE(load_gridview_item)
         }
 
@@ -324,7 +331,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             }
             mItemHeight = height;
             mImageViewLayoutParams =
-                    new GridView.LayoutParams(LayoutParams.MATCH_PARENT, mItemHeight);
+                    new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, mItemHeight);
             mImageFetcher.setImageSize(height);
             notifyDataSetChanged();
         }

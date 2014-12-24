@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <mk.apps.soundblog.fragment.RecyclingImageView
         android:id="@+id/entry_ic"
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#fff"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/entry_title"
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:layout_weight="0"
-        android:text="test title"
-        android:textColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#61000000"
+        android:gravity="center"
+        android:padding="@dimen/tile_txt_padding"
+        android:singleLine="true"
+        android:textColor="#000"
         android:textSize="13sp" />
-</LinearLayout>
+</FrameLayout>
