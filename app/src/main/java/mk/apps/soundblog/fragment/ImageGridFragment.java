@@ -218,7 +218,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         private int mNumColumns = 0;
         private int mActionBarHeight = 0;
         private GridView.LayoutParams mImageViewLayoutParams;
-
+        private LayoutInflater mLayoutInflater;
         public ImageAdapter(Context context) {
             super();
             mContext = context;
@@ -231,6 +231,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
                 mActionBarHeight = TypedValue.complexToDimensionPixelSize(
                         tv.data, context.getResources().getDisplayMetrics());
             }
+            mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
@@ -278,24 +279,27 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             // First check if this is the top row
             if (position < mNumColumns) {
                 if (convertView == null) {
-                    convertView = new View(mContext);
+                    convertView = mLayoutInflater.inflate(R.layout.entry_item, null);
                 }
                 // Set empty view with height of ActionBar
-                convertView.setLayoutParams(new AbsListView.LayoutParams(
-                        LayoutParams.MATCH_PARENT, mActionBarHeight));
+//                convertView.setLayoutParams(new AbsListView.LayoutParams(
+//                        LayoutParams.MATCH_PARENT, mActionBarHeight));
                 return convertView;
             }
 
             // Now handle the main ImageView thumbnails
             ImageView imageView;
             if (convertView == null) { // if it's not recycled, instantiate and initialize
-                imageView = new RecyclingImageView(mContext);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setLayoutParams(mImageViewLayoutParams);
-            } else { // Otherwise re-use the converted view
-                imageView = (ImageView) convertView;
-            }
+                convertView = mLayoutInflater.inflate(R.layout.entry_item, null);
 
+
+//                imageView = new RecyclingImageView(mContext);
+//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                imageView.setLayoutParams(mImageViewLayoutParams);
+            } else { // Otherwise re-use the converted view
+//                imageView = (ImageView) convertView;
+            }
+            imageView = (ImageView) convertView.findViewById(R.id.entry_ic);
             // Check the height matches our calculated column width
             if (imageView.getLayoutParams().height != mItemHeight) {
                 imageView.setLayoutParams(mImageViewLayoutParams);
